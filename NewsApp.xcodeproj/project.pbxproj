@@ -76,6 +76,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8394BFC02442F40E00CCED2E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8394BFB124428DCD00CCED2E /* HomeViewController.swift */,
+				83B15A8C244277480039E9D7 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8394BFC12442F46D00CCED2E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8394BFB92442A9F400CCED2E /* NewsCell.swift */,
+				8394BFBD2442C6DF00CCED2E /* WeatherView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8394BFC22442F48900CCED2E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8394BFBB2442AE1A00CCED2E /* News.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8394BFC32442F49500CCED2E /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		83B15A7C244277480039E9D7 = {
 			isa = PBXGroup;
 			children = (
@@ -99,17 +132,16 @@
 		83B15A87244277480039E9D7 /* NewsApp */ = {
 			isa = PBXGroup;
 			children = (
+				8394BFC32442F49500CCED2E /* Service */,
+				8394BFC22442F48900CCED2E /* Model */,
+				8394BFC12442F46D00CCED2E /* View */,
+				8394BFC02442F40E00CCED2E /* Controller */,
 				83B15A88244277480039E9D7 /* AppDelegate.swift */,
 				83B15A8A244277480039E9D7 /* SceneDelegate.swift */,
-				83B15A8C244277480039E9D7 /* ViewController.swift */,
 				83B15A8E244277480039E9D7 /* Main.storyboard */,
 				83B15A91244277490039E9D7 /* Assets.xcassets */,
 				83B15A93244277490039E9D7 /* LaunchScreen.storyboard */,
 				83B15A96244277490039E9D7 /* Info.plist */,
-				8394BFB124428DCD00CCED2E /* HomeViewController.swift */,
-				8394BFB92442A9F400CCED2E /* NewsCell.swift */,
-				8394BFBB2442AE1A00CCED2E /* News.swift */,
-				8394BFBD2442C6DF00CCED2E /* WeatherView.swift */,
 			);
 			path = NewsApp;
 			sourceTree = "<group>";

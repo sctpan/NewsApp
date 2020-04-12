@@ -33,9 +33,11 @@ class HomeViewController: UIViewController {
     
     func addWeatherView() {
         weatherView.frame.size.width = tableView.frame.size.width
-        weatherView.frame.size.height = 150
+        weatherView.frame.size.height = 110
         tableView.tableHeaderView = weatherView
     }
+    
+    
     
     
     
@@ -63,7 +65,7 @@ class HomeViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 100
+        tableView.rowHeight = 130
         tableView.sectionHeaderHeight = 0.01;
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         setTableViewConstraints()
@@ -82,23 +84,26 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        print("height for Header")
-        return 20.0
+        if(section == 0) {
+            return 20.0
+        } else {
+            return 5.0
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return newsList.count
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(newsList.count)
-        return newsList.count
+        return 1
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
-        let news = newsList[indexPath.row]
+        let news = newsList[indexPath.section]
         cell.set(news: news)
         return cell
     }
