@@ -10,8 +10,9 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let searchController = UISearchController()
-    let scrollView = UIScrollView()
-    let weatherView = WeatherView()
+    let weatherView = WeatherView(city: "Los Stantos")
+    var weatherService = WeatherService()
+    var weatherInfo: Weather!
     var tableView = UITableView()
     var newsList: [News] = [News]()
     override func viewDidLoad() {
@@ -22,9 +23,22 @@ class HomeViewController: UIViewController {
         addSearchBar()
         addWeatherView()
         addTableView()
+        createObservers()
+        
+        
       //  addScrollView()
     }
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.getWeatherInfo(notification:)), name: Constants.weatherDataReady, object: nil)
+    }
     
+    @objc func getWeatherInfo(notification: NSNotification) {
+        weatherInfo = weatherService.getWeather()
+        print(weatherInfo.city)
+        print(weatherInfo.state)
+        print(weatherInfo.temperature)
+        print(weatherInfo.weather)
+    }
 //    func addScrollView() {
 //        scrollView.backgroundColor = .green
 //        view.addSubview(scrollView)
@@ -32,8 +46,7 @@ class HomeViewController: UIViewController {
 //    }
     
     func addWeatherView() {
-        weatherView.frame.size.width = tableView.frame.size.width
-        weatherView.frame.size.height = 110
+        
         tableView.tableHeaderView = weatherView
     }
     
