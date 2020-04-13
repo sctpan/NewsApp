@@ -16,7 +16,7 @@ class NewsCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = backgroundColor
+        backgroundColor = backGroundColor
         layer.borderColor = borderColor.cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 8

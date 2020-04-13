@@ -10,7 +10,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let searchController = UISearchController()
-    let weatherView = WeatherView(city: "Los Stantos")
+    var weatherView: WeatherView!
     var weatherService = WeatherService()
     var weatherInfo: Weather!
     var tableView = UITableView()
@@ -21,7 +21,7 @@ class HomeViewController: UIViewController {
 //        scrollView.contentSize.width = view.frame.size.width - 20
 //        scrollView.contentSize.height = view.frame.size.height
         addSearchBar()
-        addWeatherView()
+        
         addTableView()
         createObservers()
         
@@ -34,10 +34,8 @@ class HomeViewController: UIViewController {
     
     @objc func getWeatherInfo(notification: NSNotification) {
         weatherInfo = weatherService.getWeather()
-        print(weatherInfo.city)
-        print(weatherInfo.state)
-        print(weatherInfo.temperature)
-        print(weatherInfo.weather)
+        self.weatherView = WeatherView(weatherInfo: weatherInfo)
+        addWeatherView()
     }
 //    func addScrollView() {
 //        scrollView.backgroundColor = .green

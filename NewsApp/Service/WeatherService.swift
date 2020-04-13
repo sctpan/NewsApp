@@ -37,6 +37,10 @@ class WeatherService: NSObject{
             guard let placemark = placemarks?.first else {return}
             self.weatherInfo.city = placemark.locality ?? ""
             self.weatherInfo.state = placemark.administrativeArea ?? ""
+            let country = placemark.isoCountryCode ?? ""
+            if(country == "US") {
+                self.weatherInfo.state = Constants.statesDictionary[self.weatherInfo.state] ?? self.weatherInfo.state
+            }
             self.getWeatherInfo()
         })
         
