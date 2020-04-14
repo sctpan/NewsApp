@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Toast_Swift
 
 class NewsCell: UITableViewCell {
     var newsTitleLabel = UILabel()
@@ -15,6 +16,7 @@ class NewsCell: UITableViewCell {
     var bookmarkBtn = UIButton()
     var imgThumb = UIImageView(frame: CGRect(x:0, y:0, width: 130, height: 130))
     var news: News!
+    var parentView: UIView!
     let backGroundColor: UIColor = UIColor( red: CGFloat(239/255.0), green: CGFloat(239/255.0), blue: CGFloat(239/255.0), alpha: CGFloat(1.0))
     let borderColor: UIColor = UIColor( red: CGFloat(191/255.0), green: CGFloat(191/255.0), blue: CGFloat(191/255.0), alpha: CGFloat(1.0))
     
@@ -25,6 +27,7 @@ class NewsCell: UITableViewCell {
         layer.borderWidth = 1
         layer.cornerRadius = 8
         clipsToBounds = true
+        
         addThumbNail()
         
         addTitleLabel()
@@ -33,8 +36,9 @@ class NewsCell: UITableViewCell {
         addBookmarkBtn()
     }
     
-    func set(news: News) {
+    func set(news: News, _ parentView: UIView) {
         self.news = news
+        self.parentView = parentView
         newsTitleLabel.text = self.news.title
         timeLabel.text = self.news.timeDiff
         sectionLabel.text = "| " + self.news.section
@@ -69,9 +73,11 @@ class NewsCell: UITableViewCell {
         if StoreService.get(key: self.news.id) != nil {
             StoreService.remove(key: self.news.id)
             bookmarkBtn.setImage(UIImage(systemName: "bookmark"), for: .normal)
+            self.parentView.makeToast(Constants.bookmarkRemoveMessage)
         } else {
             StoreService.store(key: self.news.id, news: self.news)
             bookmarkBtn.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+            self.parentView.makeToast(Constants.bookmarkSaveMessage)
         }
     }
     
@@ -101,7 +107,7 @@ class NewsCell: UITableViewCell {
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.leadingAnchor.constraint(equalTo: imgThumb.trailingAnchor, constant: 10).isActive = true
         timeLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7).isActive = true
-        timeLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        timeLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     func addTitleLabel() {

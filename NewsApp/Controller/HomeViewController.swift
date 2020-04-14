@@ -8,28 +8,28 @@
 
 import UIKit
 import SwiftSpinner
+import Toast_Swift
 
 class HomeViewController: UIViewController {
     let searchController = UISearchController()
     var weatherView: WeatherView!
     var weatherService = WeatherService()
-    var newsService = NewsService(target: "homeNews")
+    var newsService: NewsService!
     var weatherInfo: Weather!
     var tableView = UITableView()
     var newsList: [News]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SwiftSpinner.show(Constants.loadingMessage)
+        ToastManager.shared.isQueueEnabled = true
 //        scrollView.contentSize.width = view.frame.size.width - 20
 //        scrollView.contentSize.height = view.frame.size.height
         addSearchBar()
         createObservers()
         
-        
       //  addScrollView()
     }
-    
-    
     
     func createObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.addWeatherView(notification:)), name: Constants.weatherDataReady, object: nil)
@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
         weatherInfo = weatherService.getWeather()
         self.weatherView = WeatherView(weatherInfo: weatherInfo)
         tableView.tableHeaderView = weatherView
+        self.newsService = NewsService(target: "homeNews")
         NotificationCenter.default.removeObserver(self, name: Constants.weatherDataReady, object: nil)
     }
 //    func addScrollView() {
@@ -78,6 +79,7 @@ class HomeViewController: UIViewController {
         tableView.sectionHeaderHeight = 0.01;
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         setTableViewConstraints()
+        NotificationCenter.default.removeObserver(self, name: Constants.homeNewsReady, object: nil)
         SwiftSpinner.hide()
     }
     
@@ -88,6 +90,7 @@ class HomeViewController: UIViewController {
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
+    
     
     
 }
@@ -114,7 +117,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
         let news = newsList[indexPath.section]
-        cell.set(news: news)
+        cell.set(news: news, self.view)
         return cell
     }
     

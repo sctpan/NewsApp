@@ -19,6 +19,7 @@ class WeatherService: NSObject{
     
     override init() {
         super.init()
+        UserDefaults.standard.set(["base"], forKey: "AppleLanguages")
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         if(CLLocationManager.locationServicesEnabled()) {
@@ -41,6 +42,7 @@ class WeatherService: NSObject{
             if(country == "US") {
                 self.weatherInfo.state = Constants.statesDictionary[self.weatherInfo.state] ?? self.weatherInfo.state
             }
+            UserDefaults.standard.removeObject(forKey: "AppleLanguages")
             self.getWeatherInfo()
         })
         
