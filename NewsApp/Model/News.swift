@@ -8,9 +8,12 @@
 
 import Foundation
 
-class News {
-    var title: String
-    init (title: String) {
-        self.title = title
-    }
+class News: Encodable, Decodable {
+    var id = ""
+    var title = ""
+    var section = ""
+    var date = ""
+    var shareUrl = ""
+    var timeDiff = ""
+    var image = ""
 }

@@ -7,35 +7,41 @@
 //
 
 import UIKit
+import SwiftSpinner
 
 class HomeViewController: UIViewController {
     let searchController = UISearchController()
     var weatherView: WeatherView!
     var weatherService = WeatherService()
+    var newsService = NewsService(target: "homeNews")
     var weatherInfo: Weather!
     var tableView = UITableView()
-    var newsList: [News] = [News]()
+    var newsList: [News]!
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchNews()
+        SwiftSpinner.show(Constants.loadingMessage)
 //        scrollView.contentSize.width = view.frame.size.width - 20
 //        scrollView.contentSize.height = view.frame.size.height
         addSearchBar()
-        
-        addTableView()
         createObservers()
         
         
       //  addScrollView()
     }
+    
+    
+    
     func createObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.getWeatherInfo(notification:)), name: Constants.weatherDataReady, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.addWeatherView(notification:)), name: Constants.weatherDataReady, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.addTableView(notification:)), name: Constants.homeNewsReady, object: nil)
+        
     }
     
-    @objc func getWeatherInfo(notification: NSNotification) {
+    @objc func addWeatherView(notification: NSNotification) {
         weatherInfo = weatherService.getWeather()
         self.weatherView = WeatherView(weatherInfo: weatherInfo)
-        addWeatherView()
+        tableView.tableHeaderView = weatherView
+        NotificationCenter.default.removeObserver(self, name: Constants.weatherDataReady, object: nil)
     }
 //    func addScrollView() {
 //        scrollView.backgroundColor = .green
@@ -43,10 +49,7 @@ class HomeViewController: UIViewController {
 //        setScrollViewConstraints()
 //    }
     
-    func addWeatherView() {
-        
-        tableView.tableHeaderView = weatherView
-    }
+   
     
     
     
@@ -65,14 +68,9 @@ class HomeViewController: UIViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
     }
-        
-    func fetchNews() {
-        for index in 0...9 {
-            newsList.append(News(title: "News \(index)"))
-        }
-    }
     
-    func addTableView() {
+    @objc func addTableView(notification: NSNotification) {
+        newsList = newsService.getHomePageNews()
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
@@ -80,6 +78,7 @@ class HomeViewController: UIViewController {
         tableView.sectionHeaderHeight = 0.01;
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         setTableViewConstraints()
+        SwiftSpinner.hide()
     }
     
     func setTableViewConstraints() {

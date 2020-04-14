@@ -66,5 +66,10 @@
 	<string>App needs Location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>App needs Location</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>
