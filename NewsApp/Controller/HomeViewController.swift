@@ -14,55 +14,47 @@ class HomeViewController: UIViewController {
     let searchController = UISearchController()
     var weatherView: WeatherView!
     var weatherService = WeatherService()
-    var newsService: NewsService!
+    var newsService = NewsService()
     var weatherInfo: Weather!
     var tableView = UITableView()
-    var newsList: [News]!
+    var newsList = [News]()
+    let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         SwiftSpinner.show(Constants.loadingMessage)
         ToastManager.shared.isQueueEnabled = true
-//        scrollView.contentSize.width = view.frame.size.width - 20
-//        scrollView.contentSize.height = view.frame.size.height
+        refreshControl.addTarget(self, action: #selector(refreshNews(_:)), for: .valueChanged)
         addSearchBar()
-        createObservers()
+        addTableView()
         
-      //  addScrollView()
+        createObservers()
+    }
+    
+    @objc func refreshNews(_ sender: Any) {
+        newsService.getHomePageNewsHelper()
     }
     
     func createObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.addWeatherView(notification:)), name: Constants.weatherDataReady, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.addTableView(notification:)), name: Constants.homeNewsReady, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.getNews(notification:)), name: Constants.homeNewsReady, object: nil)
         
+    }
+    
+    @objc func getNews(notification: NSNotification) {
+        newsList = newsService.getHomePageNews()
+        tableView.reloadData()
+        refreshControl.endRefreshing()
+        SwiftSpinner.hide()
     }
     
     @objc func addWeatherView(notification: NSNotification) {
         weatherInfo = weatherService.getWeather()
         self.weatherView = WeatherView(weatherInfo: weatherInfo)
         tableView.tableHeaderView = weatherView
-        self.newsService = NewsService(target: "homeNews")
+        refreshNews("")
         NotificationCenter.default.removeObserver(self, name: Constants.weatherDataReady, object: nil)
     }
-//    func addScrollView() {
-//        scrollView.backgroundColor = .green
-//        view.addSubview(scrollView)
-//        setScrollViewConstraints()
-//    }
-    
-   
-    
-    
-    
-    
-    
-//    func setScrollViewConstraints() {
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-//        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-//        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
-//        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-//    }
     
     
     func addSearchBar() {
@@ -70,17 +62,16 @@ class HomeViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = true
     }
     
-    @objc func addTableView(notification: NSNotification) {
-        newsList = newsService.getHomePageNews()
+    @objc func addTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.addSubview(refreshControl)
+//        tableView.refreshControl = refreshControl
         tableView.rowHeight = 130
         tableView.sectionHeaderHeight = 0.01;
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         setTableViewConstraints()
-        NotificationCenter.default.removeObserver(self, name: Constants.homeNewsReady, object: nil)
-        SwiftSpinner.hide()
     }
     
     func setTableViewConstraints() {

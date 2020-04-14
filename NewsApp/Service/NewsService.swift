@@ -11,22 +11,14 @@ import Alamofire
 import SwiftyJSON
 
 class NewsService {
-    var homePageNews = [News]()
-    init(target: String) {
-        switch target {
-        case "homeNews":
-            getHomePageNewsHelper()
-        default:
-            getHomePageNewsHelper()
-        }
-    }
-    
+    var homePageNews: [News]!
     
     func getHomePageNews() -> [News]{
         return homePageNews
     }
     
     func getHomePageNewsHelper() {
+        homePageNews = [News]()
         AF.request(Constants.backendUrl + "news/guardian/newest").responseJSON {
             response in
             switch response.result {
