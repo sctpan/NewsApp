@@ -12,9 +12,40 @@ import SwiftyJSON
 
 class NewsService {
     var homePageNews: [News]!
+    var detailPageNews: News!
     
     func getHomePageNews() -> [News]{
         return homePageNews
+    }
+    
+    func getDetailPageNews() -> News {
+        return detailPageNews
+    }
+    
+    func getDetailPageNewsHelper(id: String) {
+        detailPageNews = News()
+        AF.request(Constants.backendUrl + "news/guardian/article", parameters: ["id": id]).responseJSON {
+            response in
+            switch response.result {
+            case .success:
+                do {
+                    let news = try JSON(data: response.data!)
+                    self.detailPageNews.id = news["news"]["id"].stringValue
+                    self.detailPageNews.date = news["news"]["date"].stringValue
+                    self.detailPageNews.section = news["news"]["section"].stringValue
+                    self.detailPageNews.title = news["news"]["title"].stringValue
+                    self.detailPageNews.shareUrl = news["news"]["shareUrl"].stringValue
+                    self.detailPageNews.image = news["news"]["image"].stringValue
+                    self.detailPageNews.description = news["news"]["description"].stringValue
+                    NotificationCenter.default.post(name: Constants.detailNewsReady, object: nil)
+                } catch {
+                    print("can't convert to json")
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+        
     }
     
     func getHomePageNewsHelper() {

@@ -66,10 +66,29 @@
                         <viewLayoutGuide key="safeArea" id="2wa-hO-PXM"/>
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="zj5-5h-42F"/>
+                    <connections>
+                        <segue destination="cg6-xK-qot" kind="show" identifier="detailSegue" id="GJb-sf-Tjf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ppz-YE-KXT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1226" y="960"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="sTh-mk-FeN">
+            <objects>
+                <viewController storyboardIdentifier="detailViewController" id="cg6-xK-qot" customClass="DetailViewController" customModule="NewsApp" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="p6D-jj-RiO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Kot-Ns-9AP"/>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="WHH-kV-6Ka"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X9U-Zd-3qF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1226" y="1674"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9mS-js-A1x">

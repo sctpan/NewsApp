@@ -15,5 +15,6 @@ class News: Encodable, Decodable {
     var date = ""
     var shareUrl = ""
     var timeDiff = ""
+    var description = ""
     var image = ""
 }

@@ -24,11 +24,19 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         SwiftSpinner.show(Constants.loadingMessage)
         ToastManager.shared.isQueueEnabled = true
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         refreshControl.addTarget(self, action: #selector(refreshNews(_:)), for: .valueChanged)
         addSearchBar()
         addTableView()
         
         createObservers()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedIndexPath, animated: animated)
+        }
     }
     
     @objc func refreshNews(_ sender: Any) {
@@ -118,4 +126,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         return headerView
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedNews = newsList[indexPath.section]
+        if let vc = storyboard?.instantiateViewController(identifier: "detailViewController") as? DetailViewController {
+            vc.news = selectedNews
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
