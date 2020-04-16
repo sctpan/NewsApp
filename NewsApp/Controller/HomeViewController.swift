@@ -22,6 +22,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        StoreService.clearAllNews()
         SwiftSpinner.show(Constants.loadingMessage)
         ToastManager.shared.isQueueEnabled = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -37,6 +38,7 @@ class HomeViewController: UIViewController {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: selectedIndexPath, animated: animated)
         }
+        tableView.reloadData()
     }
     
     @objc func refreshNews(_ sender: Any) {
@@ -90,6 +92,9 @@ class HomeViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
+   
+    
+    
     
     
 }
@@ -131,6 +136,34 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if let vc = storyboard?.instantiateViewController(identifier: "detailViewController") as? DetailViewController {
             vc.news = selectedNews
             navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let news = self.newsList[indexPath.section]
+        var bookmarkImage = UIImage(systemName: "bookmark")
+        if StoreService.get(key: news.id) != nil {
+            bookmarkImage = UIImage(systemName: "bookmark.fill")
+        }
+        let share = UIAction(title: "Share with Twitter", image: UIImage(named: "twitter")) {
+            action in
+            ShareService.shareWithTwitter(url: news.shareUrl)
+        }
+        
+        let bookmark = UIAction(title: "Bookmark", image: bookmarkImage) {
+            action in
+            let cell = tableView.cellForRow(at: indexPath) as! NewsCell
+            cell.buttonClicked()
+            
+//            if StoreService.get(key: news.id) != nil {
+//                StoreService.remove(key: news.id)
+//            } else {
+//                StoreService.store(key: news.id, news: news)
+//            }
+//            tableView.reloadRows(at: [indexPath], with: .fade)
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "Menu", children: [share, bookmark])
         }
     }
 }

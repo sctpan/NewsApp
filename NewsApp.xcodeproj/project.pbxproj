@@ -13,6 +13,10 @@
 		835EDBEE2444FDF900CA1981 /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835EDBED2444FDF900CA1981 /* NewsService.swift */; };
 		835EDBF024453BBE00CA1981 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835EDBEF24453BBE00CA1981 /* StoreService.swift */; };
 		835EDBF22445738400CA1981 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835EDBF12445738400CA1981 /* DetailViewController.swift */; };
+		835EDBF424479CC400CA1981 /* ShareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835EDBF324479CC400CA1981 /* ShareService.swift */; };
+		835EDBF62447B55A00CA1981 /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835EDBF52447B55A00CA1981 /* BookmarkViewController.swift */; };
+		835EDBF82447BA2A00CA1981 /* CollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835EDBF72447BA2A00CA1981 /* CollectionLayout.swift */; };
+		835EDBFA2447BBA700CA1981 /* BookmarkNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835EDBF92447BBA700CA1981 /* BookmarkNewsCell.swift */; };
 		8394BFB224428DCD00CCED2E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8394BFB124428DCD00CCED2E /* HomeViewController.swift */; };
 		8394BFBA2442A9F400CCED2E /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8394BFB92442A9F400CCED2E /* NewsCell.swift */; };
 		8394BFBC2442AE1A00CCED2E /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8394BFBB2442AE1A00CCED2E /* News.swift */; };
@@ -49,6 +53,10 @@
 		835EDBED2444FDF900CA1981 /* NewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
 		835EDBEF24453BBE00CA1981 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		835EDBF12445738400CA1981 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		835EDBF324479CC400CA1981 /* ShareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareService.swift; sourceTree = "<group>"; };
+		835EDBF52447B55A00CA1981 /* BookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
+		835EDBF72447BA2A00CA1981 /* CollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionLayout.swift; sourceTree = "<group>"; };
+		835EDBF92447BBA700CA1981 /* BookmarkNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkNewsCell.swift; sourceTree = "<group>"; };
 		8394BFB124428DCD00CCED2E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8394BFB92442A9F400CCED2E /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		8394BFBB2442AE1A00CCED2E /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
@@ -94,6 +102,7 @@
 				8394BFB124428DCD00CCED2E /* HomeViewController.swift */,
 				83B15A8C244277480039E9D7 /* ViewController.swift */,
 				835EDBF12445738400CA1981 /* DetailViewController.swift */,
+				835EDBF52447B55A00CA1981 /* BookmarkViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -103,6 +112,8 @@
 			children = (
 				8394BFB92442A9F400CCED2E /* NewsCell.swift */,
 				8394BFBD2442C6DF00CCED2E /* WeatherView.swift */,
+				835EDBF72447BA2A00CA1981 /* CollectionLayout.swift */,
+				835EDBF92447BBA700CA1981 /* BookmarkNewsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -122,6 +133,7 @@
 				835EDBE72443ABDC00CA1981 /* WeatherService.swift */,
 				835EDBED2444FDF900CA1981 /* NewsService.swift */,
 				835EDBEF24453BBE00CA1981 /* StoreService.swift */,
+				835EDBF324479CC400CA1981 /* ShareService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -383,11 +395,15 @@
 				835EDBE82443ABDC00CA1981 /* WeatherService.swift in Sources */,
 				83B15A8D244277480039E9D7 /* ViewController.swift in Sources */,
 				8394BFBC2442AE1A00CCED2E /* News.swift in Sources */,
+				835EDBF62447B55A00CA1981 /* BookmarkViewController.swift in Sources */,
+				835EDBFA2447BBA700CA1981 /* BookmarkNewsCell.swift in Sources */,
 				8394BFBA2442A9F400CCED2E /* NewsCell.swift in Sources */,
+				835EDBF424479CC400CA1981 /* ShareService.swift in Sources */,
 				835EDBEA2443C89700CA1981 /* Weather.swift in Sources */,
 				835EDBEC2443E61800CA1981 /* Constants.swift in Sources */,
 				83B15A89244277480039E9D7 /* AppDelegate.swift in Sources */,
 				83B15A8B244277480039E9D7 /* SceneDelegate.swift in Sources */,
+				835EDBF82447BA2A00CA1981 /* CollectionLayout.swift in Sources */,
 				8394BFB224428DCD00CCED2E /* HomeViewController.swift in Sources */,
 				8394BFBE2442C6DF00CCED2E /* WeatherView.swift in Sources */,
 				835EDBEE2444FDF900CA1981 /* NewsService.swift in Sources */,

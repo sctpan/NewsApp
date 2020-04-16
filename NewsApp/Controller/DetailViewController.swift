@@ -151,7 +151,7 @@ class DetailViewController: UIViewController {
     
     
     @objc func shareBtnClicked() {
-        print("twitter")
+        ShareService.shareWithTwitter(url:self.detailNews.shareUrl)
     }
     
     @objc func bookmarkBtnClicked() {

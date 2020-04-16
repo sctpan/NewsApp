@@ -15,7 +15,26 @@ class StoreService {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(news) {
             defaults.set(encoded, forKey: key)
-//            print("news saved")
+            var newsList = getNewsList()
+            newsList.append(news);
+            let newsListJson = try? encoder.encode(newsList)
+            defaults.set(newsListJson!, forKey: "news")
+        }
+    }
+    
+    static func getNewsList() -> [News]{
+        let defaults = UserDefaults.standard
+        let decoder = JSONDecoder()
+        if ((defaults.object(forKey: "news") as? Data) != nil) {
+            let newsListJson = defaults.object(forKey: "news") as! Data
+            let newsList = try? decoder.decode([News].self, from: newsListJson)
+            if(newsList == nil) {
+                return [News]()
+            } else {
+                return newsList!
+            }
+        } else {
+            return [News]()
         }
     }
     
@@ -37,7 +56,31 @@ class StoreService {
     
     static func remove(key: String) {
         let defaults = UserDefaults.standard
+        let encoder = JSONEncoder()
         defaults.removeObject(forKey: key)
-//        print("news removed")
+        var newsList = getNewsList()
+        var removeIndex = -1
+        if(newsList.count > 0) {
+            for index in 0...newsList.count - 1 {
+                if(newsList[index].id == key) {
+                    removeIndex = index
+                }
+            }
+            if removeIndex != -1 {
+                newsList.remove(at: removeIndex)
+            }
+        }
+        let newsListJson = try? encoder.encode(newsList)
+        defaults.set(newsListJson!, forKey: "news")
+    }
+    
+    static func clearAllNews() {
+        let newsList = getNewsList()
+        if(newsList.count > 0) {
+            for index in 0...newsList.count - 1 {
+                remove(key: newsList[index].id)
+            }
+        }
+        UserDefaults.standard.removeObject(forKey: "news")
     }
 }
