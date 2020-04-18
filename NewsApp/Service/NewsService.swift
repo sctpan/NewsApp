@@ -13,13 +13,35 @@ import SwiftyJSON
 class NewsService {
     var homePageNews: [News]!
     var detailPageNews: News!
-    
+    var chartData: [Int]!
     func getHomePageNews() -> [News]{
         return homePageNews
     }
     
     func getDetailPageNews() -> News {
         return detailPageNews
+    }
+    
+    func getChartData() -> [Int]{
+        return chartData
+    }
+    
+    func getChartDataHelper(keyword: String) {
+        AF.request(Constants.backendUrl + "news/trend", parameters: ["keyword": keyword]).responseJSON {
+            response in
+            switch response.result {
+            case .success:
+                do {
+                    let data = try JSON(data: response.data!)
+                    self.chartData = data["data"].arrayValue.map{ $0.intValue}
+                    NotificationCenter.default.post(name: Constants.chartDataReady, object: nil)
+                } catch {
+                    print("can't convert to json")
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
     }
     
     func getDetailPageNewsHelper(id: String) {

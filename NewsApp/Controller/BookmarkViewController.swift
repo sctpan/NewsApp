@@ -44,7 +44,7 @@ class BookmarkViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
@@ -52,6 +52,11 @@ class BookmarkViewController: UIViewController {
 
 extension BookmarkViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if (newsList.count == 0) {
+            self.collectionView.setEmptyMessage(message: "No bookmarks added.")
+        } else {
+            self.collectionView.restore()
+        }
         return newsList.count
     }
 
@@ -64,6 +69,27 @@ extension BookmarkViewController: UICollectionViewDataSource {
 
 extension BookmarkViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let selectedNews = newsList[indexPath.item]
+        if let vc = storyboard?.instantiateViewController(identifier: "detailViewController") as? DetailViewController {
+            vc.news = selectedNews
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+extension UICollectionView {
+
+    func setEmptyMessage(message: String) {
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont.systemFont(ofSize: 20)
+        self.backgroundView = messageLabel;
+    }
+
+    func restore() {
+        self.backgroundView = nil
     }
 }

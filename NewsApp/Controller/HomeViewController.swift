@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        StoreService.clearAllNews()
+//        StoreService.clearAllNews()
         SwiftSpinner.show(Constants.loadingMessage)
         ToastManager.shared.isQueueEnabled = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)

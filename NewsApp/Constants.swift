@@ -13,8 +13,10 @@ struct Constants {
     static let weatherDataReady = Notification.Name("weatherDataReady")
     static let homeNewsReady = Notification.Name("homeNewsReady")
     static let detailNewsReady = Notification.Name("detailNewsReady")
+    static let chartDataReady = Notification.Name("chartDataReady")
     static let statesDictionary = ["NM": "New Mexico", "SD": "South Dakota", "TN": "Tennessee", "VT": "Vermont", "WY": "Wyoming", "OR": "Oregon", "MI": "Michigan", "MS": "Mississippi", "WA": "Washington", "ID": "Idaho", "ND": "North Dakota", "GA": "Georgia", "UT": "Utah", "OH": "Ohio", "DE": "Delaware", "NC": "North Carolina", "NJ": "New Jersey", "IN": "Indiana", "IL": "Illinois", "HI": "Hawaii", "NH": "New Hampshire", "MO": "Missouri", "MD": "Maryland", "WV": "West Virginia", "MA": "Massachusetts", "IA": "Iowa", "KY": "Kentucky", "NE": "Nebraska", "SC": "South Carolina", "AZ": "Arizona", "KS": "Kansas", "NV": "Nevada", "WI": "Wisconsin", "RI": "Rhode Island", "FL": "Florida", "TX": "Texas", "AL": "Alabama", "CO": "Colorado", "AK": "Alaska", "VA": "Virginia", "AR": "Arkansas", "CA": "California", "LA": "Louisiana", "CT": "Connecticut", "NY": "New York", "MN": "Minnesota", "MT": "Montana", "OK": "Oklahoma", "PA": "Pennsylvania", "ME": "Maine"]
-    static let backendUrl = "http://ec2-3-101-29-96.us-west-1.compute.amazonaws.com:5000/"
+//    static let backendUrl = "http://ec2-13-52-97-136.us-west-1.compute.amazonaws.com:5000/"
+    static let backendUrl = "http://localhost:5000/"
     static let loadingMessage = "Loading Home Page.."
     static let bookmarkRemoveMessage = "Article Removed from Bookmarks"
     static let bookmarkSaveMessage = "Article Bookmarked. Check out the Bookmarks tab to view"
