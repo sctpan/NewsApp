@@ -11,7 +11,7 @@ target 'NewsApp' do
   pod 'SwiftyJSON', '~>4.3.0'
   pod 'SwiftSpinner'
   pod 'Charts'
-  pod 'XLPagerTabStrip'
+  pod 'XLPagerTabStrip', '~>8.1.1'
 
   target 'NewsAppTests' do
     inherit! :search_paths

@@ -27,9 +27,7 @@ class NewsCell: UITableViewCell {
         layer.borderWidth = 1
         layer.cornerRadius = 8
         clipsToBounds = true
-        
         addThumbNail()
-        
         addTitleLabel()
         addTimeLabel()
         addSectionLabel()

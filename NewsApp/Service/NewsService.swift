@@ -12,6 +12,7 @@ import SwiftyJSON
 
 class NewsService {
     var homePageNews: [News]!
+    var headlinesPageNews: [News]!
     var detailPageNews: News!
     var chartData: [Int]!
     func getHomePageNews() -> [News]{
@@ -24,6 +25,10 @@ class NewsService {
     
     func getChartData() -> [Int]{
         return chartData
+    }
+    
+    func getHeadlinesPageNews() -> [News] {
+        return headlinesPageNews
     }
     
     func getChartDataHelper(keyword: String) {
@@ -43,6 +48,7 @@ class NewsService {
             }
         }
     }
+    
     
     func getDetailPageNewsHelper(id: String) {
         detailPageNews = News()
@@ -90,6 +96,35 @@ class NewsService {
                         self.homePageNews.append(current)
                     }
                     NotificationCenter.default.post(name: Constants.homeNewsReady, object: nil)
+                } catch {
+                    print("can't convert to json")
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    func getHeadlinesPageNewsHelper(section: String) {
+        headlinesPageNews = [News]()
+        AF.request(Constants.backendUrl + "news/guardian", parameters: ["section": section]).responseJSON {
+            response in
+            switch response.result {
+            case .success:
+                do {
+                    let json = try JSON(data: response.data!)
+                    for (_, news): (String, JSON) in json["news"] {
+                        let current = News()
+                        current.id = news["id"].stringValue
+                        current.date = news["date"].stringValue
+                        current.section = news["section"].stringValue
+                        current.title = news["title"].stringValue
+                        current.shareUrl = news["shareUrl"].stringValue
+                        current.timeDiff = news["timeDiff"].stringValue
+                        current.image = news["image"].stringValue
+                        self.headlinesPageNews.append(current)
+                    }
+                    NotificationCenter.default.post(name: Constants.headlinesNewsReady, object: nil)
                 } catch {
                     print("can't convert to json")
                 }
