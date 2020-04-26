@@ -1,36 +1,28 @@
 //
-//  HomeViewController.swift
+//  SearchViewController.swift
 //  NewsApp
 //
-//  Created by 潘一帆 on 2020/4/11.
+//  Created by 潘一帆 on 2020/4/25.
 //  Copyright © 2020 Yifan. All rights reserved.
 //
 
 import UIKit
 import SwiftSpinner
 import Toast_Swift
-
-class HomeViewController: UIViewController {
-    let searchResultController = SearchResultViewController()
-    var searchController: UISearchController!
-    var weatherView: WeatherView!
-    var weatherService = WeatherService()
+class SearchViewController: UIViewController {
     var newsService = NewsService()
-    var weatherInfo: Weather!
     var tableView = UITableView()
     var newsList = [News]()
-    let refreshControl = UIRefreshControl()
+    var images = [UIImage]()
+    var query = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        StoreService.clearAllNews()
-        SwiftSpinner.show(Constants.loadingMessage)
+        SwiftSpinner.show("Loading Search results..")
         ToastManager.shared.isQueueEnabled = true
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        refreshControl.addTarget(self, action: #selector(refreshNews(_:)), for: .valueChanged)
-        addSearchBar()
         addTableView()
         createObservers()
+        refreshNews(query: self.query)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,54 +33,31 @@ class HomeViewController: UIViewController {
         tableView.reloadData()
     }
     
-    @objc func refreshNews(_ sender: Any) {
-        newsService.getHomePageNewsHelper()
+    func refreshNews(query: String) {
+        print("My query is: \(query)")
+        newsService.getSearchPageNewsHelper(query: query)
     }
     
     func createObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.addWeatherView(notification:)), name: Constants.weatherDataReady, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.getNews(notification:)), name: Constants.homeNewsReady, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.showSearchPage(notification:)), name: Constants.showSearchResultPage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SearchViewController.getNews(notification:)), name: Constants.searchNewsReady, object: nil)
         
     }
     
-    @objc func showSearchPage(notification: NSNotification) {
-        let query = searchResultController.selectedQuery
-        if let vc = storyboard?.instantiateViewController(identifier: "SearchViewController") as? SearchViewController {
-            vc.query = query
-            navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
     @objc func getNews(notification: NSNotification) {
-        newsList = newsService.getHomePageNews()
+        newsList = newsService.getSearchPageNews()
+        images = newsService.getCroppedImages()
         tableView.reloadData()
-        refreshControl.endRefreshing()
         SwiftSpinner.hide()
     }
     
-    @objc func addWeatherView(notification: NSNotification) {
-        weatherInfo = weatherService.getWeather()
-        self.weatherView = WeatherView(weatherInfo: weatherInfo)
-        tableView.tableHeaderView = weatherView
-        refreshNews("")
-        NotificationCenter.default.removeObserver(self, name: Constants.weatherDataReady, object: nil)
-    }
+   
     
-    
-    func addSearchBar() {
-        searchController = UISearchController(searchResultsController: searchResultController)
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true
-        searchController.searchResultsUpdater = searchResultController
-    }
+   
     
     @objc func addTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.addSubview(refreshControl)
-//        tableView.refreshControl = refreshControl
         tableView.rowHeight = 130
         tableView.sectionHeaderHeight = 0.01;
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
@@ -102,37 +71,28 @@ class HomeViewController: UIViewController {
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
-    
-   
-    
-    
-    
-    
+
 }
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if(section == 0) {
-            return 20.0
-        } else {
-            return 5.0
-        }
-    }
-    
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return newsList.count
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 5.0
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
         let news = newsList[indexPath.section]
-        cell.set(news: news, self.view)
+        let image = images[indexPath.section]
+        //cell.set(news: news, self.view)
+        cell.setForLargeImg(news: news, image: image, self.view)
         return cell
     }
     

@@ -12,11 +12,21 @@ import SwiftyJSON
 
 class NewsService {
     var homePageNews: [News]!
+    var searchPageNews: [News]!
     var headlinesPageNews: [News]!
     var detailPageNews: News!
     var chartData: [Int]!
+    var croppedImages: [UIImage]!
+    func getCroppedImages() -> [UIImage]{
+        return croppedImages
+    }
+    
     func getHomePageNews() -> [News]{
         return homePageNews
+    }
+    
+    func getSearchPageNews() -> [News] {
+        return searchPageNews
     }
     
     func getDetailPageNews() -> News {
@@ -48,6 +58,38 @@ class NewsService {
             }
         }
     }
+    
+    func getSearchPageNewsHelper(query: String) {
+        searchPageNews = [News]()
+        AF.request(Constants.backendUrl + "news/search/guardian", parameters: ["q": query]).responseJSON {
+            response in
+            switch response.result {
+            case .success:
+                do {
+                    let json = try JSON(data: response.data!)
+                    for (_, news): (String, JSON) in json["news"] {
+                        let current = News()
+                        current.id = news["id"].stringValue
+                        current.date = news["date"].stringValue
+                        current.section = news["section"].stringValue
+                        current.title = news["title"].stringValue
+                        current.shareUrl = news["shareUrl"].stringValue
+                        current.timeDiff = news["timeDiff"].stringValue
+                        current.image = news["image"].stringValue
+                        self.searchPageNews.append(current)
+                    }
+                    self.croppedImages = ImageService.cropNewsImages(newsList: self.searchPageNews)
+                    NotificationCenter.default.post(name: Constants.searchNewsReady, object: nil)
+                } catch {
+                    print("can't convert to json")
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    
     
     
     func getDetailPageNewsHelper(id: String) {
@@ -124,6 +166,7 @@ class NewsService {
                         current.image = news["image"].stringValue
                         self.headlinesPageNews.append(current)
                     }
+                    self.croppedImages = ImageService.cropNewsImages(newsList: self.headlinesPageNews)
                     NotificationCenter.default.post(name: Constants.headlinesNewsReady, object: nil)
                 } catch {
                     print("can't convert to json")

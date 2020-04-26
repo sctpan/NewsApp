@@ -103,6 +103,7 @@ extension UITextField {
 
 extension TrendViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         if textField.text != nil {
             self.keyword = textField.text!
         }

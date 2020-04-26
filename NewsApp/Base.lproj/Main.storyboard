@@ -58,6 +58,22 @@
             </objects>
             <point key="canvasLocation" x="1932" y="960"/>
         </scene>
+        <!--Search Result View Controller-->
+        <scene sceneID="auA-9P-kls">
+            <objects>
+                <viewController id="His-7L-o9D" customClass="SearchResultViewController" customModule="NewsApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wcP-dp-gFm">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="FOk-L9-B4K"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="XvA-o1-29Y"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xxb-W0-6zg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2264" y="1529"/>
+        </scene>
         <!--Home-->
         <scene sceneID="BFL-DL-OJc">
             <objects>
@@ -70,7 +86,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="zj5-5h-42F"/>
                     <connections>
-                        <segue destination="cg6-xK-qot" kind="show" identifier="detailSegue" id="GJb-sf-Tjf"/>
+                        <segue destination="gjs-sV-Giv" kind="show" id="FaO-qX-nxb"/>
+                        <segue destination="cg6-xK-qot" kind="show" id="1Wi-cg-dUR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ppz-YE-KXT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -91,7 +108,23 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X9U-Zd-3qF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1226" y="1674"/>
+            <point key="canvasLocation" x="-541" y="1742"/>
+        </scene>
+        <!--Search Results-->
+        <scene sceneID="RBY-dW-CVh">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7mX-on-peO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="SearchViewController" id="gjs-sV-Giv" customClass="SearchViewController" customModule="NewsApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Wx0-8D-baM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="vr7-RJ-15v"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Search Results" id="uXr-n5-FJs"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-1281" y="1742"/>
         </scene>
         <!--News Table View Controller-->
         <scene sceneID="TRE-pT-ih5">
@@ -107,7 +140,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3RQ-hq-DTn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-233" y="1700"/>
+            <point key="canvasLocation" x="676.81159420289862" y="1699.5535714285713"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9mS-js-A1x">
@@ -152,7 +185,7 @@
         <scene sceneID="RiU-h6-QXa">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="scT-Or-381" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Headlines" image="globe" catalog="system" selectedImage="globe" id="qrX-ze-lmt"/>
+                    <tabBarItem key="tabBarItem" title="Headlines" image="rectangle.split.3x3.fill" catalog="system" selectedImage="rectangle.split.3x3.fill" id="qrX-ze-lmt"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="xGA-z6-Zeo">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
@@ -208,8 +241,8 @@
     </scenes>
     <resources>
         <image name="bookmark.fill" catalog="system" width="112" height="128"/>
-        <image name="globe" catalog="system" width="128" height="121"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="rectangle.split.3x3.fill" catalog="system" width="128" height="93"/>
         <image name="trending-up" width="28" height="28"/>
     </resources>
 </document>

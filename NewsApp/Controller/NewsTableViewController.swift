@@ -14,9 +14,9 @@ class NewsTableViewController: UIViewController {
     var itemTitle = ""
     var section: String!
     var newsList = [News]()
+    var images = [UIImage]()
     let newsService = NewsService()
     var tableView = UITableView()
-    let refreshControl = UIRefreshControl()
     init(title: String) {
         super.init(nibName: nil, bundle: nil)
         self.itemTitle = title
@@ -32,12 +32,12 @@ class NewsTableViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         section = Constants.sections[itemTitle]
         createObservers()
-        refreshControl.addTarget(self, action: #selector(refreshNews(_:)), for: .valueChanged)
-        refreshNews("")
+        refreshNews()
         addTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+      
        super.viewWillAppear(animated)
        if let selectedIndexPath = tableView.indexPathForSelectedRow {
            tableView.deselectRow(at: selectedIndexPath, animated: animated)
@@ -49,7 +49,6 @@ class NewsTableViewController: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.addSubview(refreshControl)
         tableView.rowHeight = 130
         tableView.sectionHeaderHeight = 0.01;
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
@@ -64,7 +63,7 @@ class NewsTableViewController: UIViewController {
        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
        
-    @objc func refreshNews(_ sender: Any) {
+    func refreshNews() {
         newsService.getHeadlinesPageNewsHelper(section: self.section)
     }
     
@@ -74,8 +73,8 @@ class NewsTableViewController: UIViewController {
     
     @objc func getNews(notification: NSNotification) {
         newsList = newsService.getHeadlinesPageNews()
+        images = newsService.getCroppedImages()
         tableView.reloadData()
-        refreshControl.endRefreshing()
         SwiftSpinner.hide()
     }
     
@@ -98,7 +97,9 @@ extension NewsTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
         let news = newsList[indexPath.section]
-        cell.set(news: news, self.view)
+        let image = images[indexPath.section]
+       // cell.set(news: news, self.view)
+        cell.setForLargeImg(news: news, image: image, self.view)
         return cell
     }
         
@@ -110,10 +111,10 @@ extension NewsTableViewController: UITableViewDelegate, UITableViewDataSource {
         
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedNews = newsList[indexPath.section]
-        if let vc = storyboard?.instantiateViewController(identifier: "detailViewController") as? DetailViewController {
-            vc.news = selectedNews
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyBoard.instantiateViewController(identifier: "detailViewController") as! DetailViewController
+        vc.news = selectedNews
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

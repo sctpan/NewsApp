@@ -54,6 +54,20 @@ class NewsCell: UITableViewCell {
         }
     }
     
+    func setForLargeImg(news: News, image: UIImage, _ parentView: UIView) {
+        self.news = news
+        self.parentView = parentView
+        newsTitleLabel.text = self.news.title
+        timeLabel.text = self.news.timeDiff
+        sectionLabel.text = "| " + self.news.section
+        imgThumb.image = image
+        if StoreService.get(key: self.news.id) != nil {
+           bookmarkBtn.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+        } else {
+           bookmarkBtn.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        }
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

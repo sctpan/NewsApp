@@ -10,7 +10,9 @@ import UIKit
 import XLPagerTabStrip
 
 class HeadlineViewController: ButtonBarPagerTabStripViewController {
-    let searchController = UISearchController()
+    let searchResultController = SearchResultViewController()
+    var searchController: UISearchController!
+    var isReload = false
     let containerScrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -26,11 +28,27 @@ class HeadlineViewController: ButtonBarPagerTabStripViewController {
         addSearchBar()
         setupSlidingTab()
         super.viewDidLoad()
+        createObservers()
+        
+    }
+    
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(HeadlineViewController.showSearchPage(notification:)), name: Constants.showSearchResultPage, object: nil)
     }
     
     func addSearchBar() {
+        searchController = UISearchController(searchResultsController: searchResultController)
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.searchResultsUpdater = searchResultController
+    }
+    
+    @objc func showSearchPage(notification: NSNotification) {
+        let query = searchResultController.selectedQuery
+        if let vc = storyboard?.instantiateViewController(identifier: "SearchViewController") as? SearchViewController {
+            vc.query = query
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     private func setupSlidingTab(){
@@ -65,7 +83,6 @@ class HeadlineViewController: ButtonBarPagerTabStripViewController {
         settings.style.buttonBarItemTitleColor = .lightGray
         settings.style.selectedBarBackgroundColor = .systemBlue
         settings.style.buttonBarItemsShouldFillAvailableWidth = true
-        
     }
 
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
@@ -76,8 +93,29 @@ class HeadlineViewController: ButtonBarPagerTabStripViewController {
             controllers.append(NewsTableViewController(title: "SPORTS"))
             controllers.append(NewsTableViewController(title: "TECHNOLOGY"))
             controllers.append(NewsTableViewController(title: "SCIENCE"))
-            return controllers
+            guard isReload else {
+                return controllers
+            }
+            for index in controllers.indices {
+               let nElements = controllers.count - index
+               let n = (Int(arc4random()) % nElements) + index
+               if n != index {
+                   controllers.swapAt(index, n)
+               }
+            }
+           let nItems = 1 + (arc4random() % 8)
+           return Array(controllers.prefix(Int(nItems)))
         }
+    
+    override func reloadPagerTabStripView() {
+        isReload = true
+        if arc4random() % 2 == 0 {
+            pagerBehaviour = .progressive(skipIntermediateViewControllers: arc4random() % 2 == 0, elasticIndicatorLimit: arc4random() % 2 == 0 )
+        } else {
+            pagerBehaviour = .common(skipIntermediateViewControllers: arc4random() % 2 == 0)
+        }
+        super.reloadPagerTabStripView()
+    }
     
     
 }

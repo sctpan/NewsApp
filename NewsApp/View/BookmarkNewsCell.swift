@@ -38,7 +38,7 @@ class BookmarkNewsCell: UICollectionViewCell {
         self.news = news
         self.parent = parent
         newsTitleLabel.text = self.news.title
-        timeLabel.text = self.news.timeDiff
+        timeLabel.text = self.news.date
         sectionLabel.text = "| " + self.news.section
         if self.news.image == "unavailable" {
             imgThumb.image = #imageLiteral(resourceName: "default-guardian")
@@ -79,7 +79,7 @@ class BookmarkNewsCell: UICollectionViewCell {
         sectionLabel.font = UIFont.systemFont(ofSize: 12)
         addSubview(sectionLabel)
         sectionLabel.translatesAutoresizingMaskIntoConstraints = false
-        sectionLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 20).isActive = true
+        sectionLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10).isActive = true
         sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
     }
     
