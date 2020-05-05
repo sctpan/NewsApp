@@ -76,6 +76,12 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
+        if (newsList.count == 0) {
+            self.tableView.setEmptyMessage(message: "No Search Results.")
+            self.tableView.separatorStyle = .none
+        } else {
+            self.tableView.restore()
+        }
         return newsList.count
     }
     
@@ -129,5 +135,23 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             UIMenu(title: "Menu", children: [share, bookmark])
         }
+    }
+}
+
+
+extension UITableView {
+
+    func setEmptyMessage(message: String) {
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont.systemFont(ofSize: 20)
+        self.backgroundView = messageLabel;
+    }
+
+    func restore() {
+        self.backgroundView = nil
     }
 }

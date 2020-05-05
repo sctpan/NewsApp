@@ -26,9 +26,11 @@ class WeatherService: NSObject{
             print("init locationManager")
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
         }
-        
+    }
+    
+    func getInfo() {
+        locationManager.startUpdatingLocation()
     }
     
     func getLocation(_ location: CLLocation) {
@@ -74,9 +76,10 @@ class WeatherService: NSObject{
 
 extension WeatherService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations[0]
-        //print("location: \(location)")
-        getLocation(location)
+        print("location updated")
         manager.stopUpdatingLocation()
+        let location = locations[0]
+        print("location: \(location)")
+        getLocation(location)
     }
 }

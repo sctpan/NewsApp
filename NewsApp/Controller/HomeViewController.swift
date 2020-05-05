@@ -20,17 +20,20 @@ class HomeViewController: UIViewController {
     var tableView = UITableView()
     var newsList = [News]()
     let refreshControl = UIRefreshControl()
+    var weatherReady = false
+    var newsReady = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 //        StoreService.clearAllNews()
         SwiftSpinner.show(Constants.loadingMessage)
         ToastManager.shared.isQueueEnabled = true
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        refreshControl.addTarget(self, action: #selector(refreshNews(_:)), for: .valueChanged)
+      //  navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        refreshControl.addTarget(self, action: #selector(refreshPage), for: .valueChanged)
         addSearchBar()
         addTableView()
         createObservers()
+        refreshPage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,16 +42,20 @@ class HomeViewController: UIViewController {
             tableView.deselectRow(at: selectedIndexPath, animated: animated)
         }
         tableView.reloadData()
+        refreshControl.endRefreshing()
     }
-    
-    @objc func refreshNews(_ sender: Any) {
+    @objc func refreshPage() {
+        print("refreshing")
+        weatherReady = false
+        newsReady = false
+        weatherService.getInfo()
         newsService.getHomePageNewsHelper()
     }
     
     func createObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.addWeatherView(notification:)), name: Constants.weatherDataReady, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.getNews(notification:)), name: Constants.homeNewsReady, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.showSearchPage(notification:)), name: Constants.showSearchResultPage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.showSearchPage(notification:)), name: Constants.showSearchResultPageForHome, object: nil)
         
     }
     
@@ -63,21 +70,28 @@ class HomeViewController: UIViewController {
     @objc func getNews(notification: NSNotification) {
         newsList = newsService.getHomePageNews()
         tableView.reloadData()
-        refreshControl.endRefreshing()
-        SwiftSpinner.hide()
+        newsReady = true
+        if(weatherReady) {
+            refreshControl.endRefreshing()
+            SwiftSpinner.hide()
+        }
     }
     
     @objc func addWeatherView(notification: NSNotification) {
         weatherInfo = weatherService.getWeather()
         self.weatherView = WeatherView(weatherInfo: weatherInfo)
         tableView.tableHeaderView = weatherView
-        refreshNews("")
-        NotificationCenter.default.removeObserver(self, name: Constants.weatherDataReady, object: nil)
+        weatherReady = true
+        if(newsReady) {
+            SwiftSpinner.hide()
+            refreshControl.endRefreshing()
+        }
     }
     
     
     func addSearchBar() {
         searchController = UISearchController(searchResultsController: searchResultController)
+        searchController.searchBar.placeholder = Constants.searchPlaceholder
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
         searchController.searchResultsUpdater = searchResultController
@@ -120,6 +134,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        print("newsList count: \(newsList.count)")
         return newsList.count
     }
     

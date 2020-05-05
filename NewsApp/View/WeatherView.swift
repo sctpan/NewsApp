@@ -28,19 +28,27 @@ class WeatherView: UIView {
     }
     
     func setBackgroundImage(_ weather: String) {
+        self.contentMode = UIView.ContentMode.scaleToFill
         switch weather {
         case "Clouds":
-            self.backgroundColor = UIColor(patternImage: UIImage(named: "cloudy_weather")!)
+         //  self.backgroundColor = UIColor(patternImage: UIImage(named: "cloudy_weather")!)
+            self.layer.contents = UIImage(named:"cloudy_weather")?.cgImage
         case "Clear":
-            self.backgroundColor = UIColor(patternImage: UIImage(named: "clear_weather")!)
+           
+            self.layer.contents = UIImage(named:"clear_weather")?.cgImage
+        //    self.backgroundColor = UIColor(patternImage: UIImage(named: "clear_weather")!)
         case "Snow":
-            self.backgroundColor = UIColor(patternImage: UIImage(named: "snowy_weather")!)
+            self.layer.contents = UIImage(named:"snowy_weather")?.cgImage
+        //    self.backgroundColor = UIColor(patternImage: UIImage(named: "snowy_weather")!)
         case "Rain":
-            self.backgroundColor = UIColor(patternImage: UIImage(named: "rainy_weather")!)
+            self.layer.contents = UIImage(named:"rainy_weather")?.cgImage
+        //    self.backgroundColor = UIColor(patternImage: UIImage(named: "rainy_weather")!)
         case "Thunderstorm":
-            self.backgroundColor = UIColor(patternImage: UIImage(named: "thunder_weather")!)
+            self.layer.contents = UIImage(named:"thunder_weather")?.cgImage
+         //   self.backgroundColor = UIColor(patternImage: UIImage(named: "thunder_weather")!)
         default:
-            self.backgroundColor = UIColor(patternImage: UIImage(named: "sunny_weather")!)
+            self.layer.contents = UIImage(named:"sunny_weather")?.cgImage
+        //    self.backgroundColor = UIColor(patternImage: UIImage(named: "sunny_weather")!)
         }
     }
     

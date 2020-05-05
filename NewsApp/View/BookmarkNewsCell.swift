@@ -44,8 +44,15 @@ class BookmarkNewsCell: UICollectionViewCell {
             imgThumb.image = #imageLiteral(resourceName: "default-guardian")
         } else {
             let url = URL(string: self.news.image)
-            let data = try? Data(contentsOf: url!)
-            imgThumb.image = UIImage(data: data!)
+            DispatchQueue.global().async { [weak self] in
+                if let data = try? Data(contentsOf: url ?? URL(string: "https://assets.guim.co.uk/images/eada8aa27c12fe2d5afa3a89d3fbae0d/fallback-logo.png")!) {
+                    if let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            self?.imgThumb.image = image
+                        }
+                    }
+                }
+            }
         }
         if StoreService.get(key: self.news.id) != nil {
            bookmarkBtn.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
@@ -87,7 +94,7 @@ class BookmarkNewsCell: UICollectionViewCell {
         imgThumb = UIImageView(frame: CGRect(x:0, y:0, width: self.bounds.width, height: 130))
         imgThumb.contentMode = .scaleAspectFill
         imgThumb.clipsToBounds = true
-        imgThumb.layer.cornerRadius = 8
+        //imgThumb.layer.cornerRadius = 8
         addSubview(imgThumb)
 //        imgThumb.translatesAutoresizingMaskIntoConstraints = false
 //        imgThumb.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true

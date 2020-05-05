@@ -17,6 +17,7 @@ class NewsTableViewController: UIViewController {
     var images = [UIImage]()
     let newsService = NewsService()
     var tableView = UITableView()
+    let refreshControl = UIRefreshControl()
     init(title: String) {
         super.init(nibName: nil, bundle: nil)
         self.itemTitle = title
@@ -29,6 +30,7 @@ class NewsTableViewController: UIViewController {
     override func viewDidLoad() {
         SwiftSpinner.show("Loading \(itemTitle) Headlines..")
         ToastManager.shared.isQueueEnabled = true
+        refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         section = Constants.sections[itemTitle]
         createObservers()
@@ -47,6 +49,7 @@ class NewsTableViewController: UIViewController {
     
      @objc func addTableView() {
         view.addSubview(tableView)
+        tableView.addSubview(refreshControl)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 130
@@ -63,7 +66,7 @@ class NewsTableViewController: UIViewController {
        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
        
-    func refreshNews() {
+    @objc func refreshNews() {
         newsService.getHeadlinesPageNewsHelper(section: self.section)
     }
     
@@ -75,6 +78,7 @@ class NewsTableViewController: UIViewController {
         newsList = newsService.getHeadlinesPageNews()
         images = newsService.getCroppedImages()
         tableView.reloadData()
+        refreshControl.endRefreshing()
         SwiftSpinner.hide()
     }
     

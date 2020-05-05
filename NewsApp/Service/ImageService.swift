@@ -33,7 +33,7 @@ class ImageService {
     
     static func cropNewsImages(newsList: [News]) -> [UIImage]{
         var croppedImages = [UIImage]()
-        let target = UIImageView(frame: CGRect(x:0, y:0, width: 130, height: 130))
+      //  let target = UIImageView(frame: CGRect(x:0, y:0, width: 130, height: 130))
         for news in newsList {
             if(news.image == "unavailable") {
                 croppedImages.append(#imageLiteral(resourceName: "default-guardian"))
@@ -41,7 +41,7 @@ class ImageService {
                 let url = URL(string: news.image)
                 let data = try? Data(contentsOf: url!)
                 let originImage = UIImage(data: data!)!
-                croppedImages.append(cropImage(original: originImage, target: target))
+                croppedImages.append(originImage)
             }
         }
         return croppedImages

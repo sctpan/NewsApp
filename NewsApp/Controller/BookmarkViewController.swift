@@ -65,6 +65,28 @@ extension BookmarkViewController: UICollectionViewDataSource {
        cell.set(news: self.newsList[indexPath.item], parent: self)
        return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let news = self.newsList[indexPath.item]
+        var bookmarkImage = UIImage(systemName: "bookmark")
+        if StoreService.get(key: news.id) != nil {
+            bookmarkImage = UIImage(systemName: "bookmark.fill")
+        }
+        let share = UIAction(title: "Share with Twitter", image: UIImage(named: "twitter")) {
+            action in
+            ShareService.shareWithTwitter(url: news.shareUrl)
+        }
+        
+        let bookmark = UIAction(title: "Bookmark", image: bookmarkImage) {
+            action in
+            let cell = collectionView.cellForItem(at: indexPath) as! BookmarkNewsCell
+            cell.buttonClicked()
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "Menu", children: [share, bookmark])
+        }
+    }
+    
 }
 
 extension BookmarkViewController: UICollectionViewDelegate {

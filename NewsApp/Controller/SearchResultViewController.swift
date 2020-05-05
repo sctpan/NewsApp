@@ -15,6 +15,7 @@ class SearchResultViewController: UITableViewController {
     var text: String = ""
     var selectedQuery: String = ""
     var nav: UINavigationController!
+    var origin = "home"
     
     override func viewDidLoad() {
         self.tableView.register(SearchCell.self, forCellReuseIdentifier: "SearchCell")
@@ -63,7 +64,12 @@ class SearchResultViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(searchResults[indexPath.row])
         self.selectedQuery = searchResults[indexPath.row]
-        NotificationCenter.default.post(name: Constants.showSearchResultPage, object: nil)
+        if(self.origin == "home") {
+            NotificationCenter.default.post(name: Constants.showSearchResultPageForHome, object: nil)
+        } else {
+            NotificationCenter.default.post(name: Constants.showSearchResultPageForHeadline, object: nil)
+        }
+        
         
     }
     
@@ -89,6 +95,9 @@ extension SearchResultViewController: UISearchResultsUpdating {
             if(self.text.count >= 3) {
                 NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(self.getResults), object: nil)
                 self.perform(#selector(self.getResults), with: nil, afterDelay: 0.5)
+            } else {
+                self.searchResults.removeAll()
+                self.tableView.reloadData()
             }
         }
     }

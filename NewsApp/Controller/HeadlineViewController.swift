@@ -33,13 +33,15 @@ class HeadlineViewController: ButtonBarPagerTabStripViewController {
     }
     
     func createObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(HeadlineViewController.showSearchPage(notification:)), name: Constants.showSearchResultPage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HeadlineViewController.showSearchPage(notification:)), name: Constants.showSearchResultPageForHeadline, object: nil)
     }
     
     func addSearchBar() {
         searchController = UISearchController(searchResultsController: searchResultController)
+        searchController.searchBar.placeholder = Constants.searchPlaceholder
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
+        searchResultController.origin = "headline"
         searchController.searchResultsUpdater = searchResultController
     }
     
