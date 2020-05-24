@@ -29,7 +29,7 @@ class NewsTableViewController: UIViewController {
     
     override func viewDidLoad() {
         SwiftSpinner.show("Loading \(itemTitle) Headlines..")
-        ToastManager.shared.isQueueEnabled = true
+       // ToastManager.shared.isQueueEnabled = true
         refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         section = Constants.sections[itemTitle]

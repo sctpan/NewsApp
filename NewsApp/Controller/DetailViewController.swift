@@ -34,6 +34,14 @@ class DetailViewController: UIViewController {
         createObservers()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if StoreService.get(key: self.news.id) != nil {
+            bookmarkBtn.image = UIImage(systemName: "bookmark.fill")
+        } else {
+            bookmarkBtn.image = UIImage(systemName: "bookmark")
+        }
+    }
+    
     func setNavigationBar() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = news.title
@@ -75,6 +83,10 @@ class DetailViewController: UIViewController {
     func addNewsBody() {
         bodyLabel.numberOfLines = 30
         bodyLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+        
+        let regex = try! NSRegularExpression(pattern: "<iframe.*iframe>")
+        detailNews.description = regex.stringByReplacingMatches(in: detailNews.description, options: [], range: NSRange(location: 0, length: detailNews.description.count), withTemplate: "")
+        
         bodyLabel.attributedText = detailNews.description.htmlToAttributedString
         bodyLabel.font = UIFont.systemFont(ofSize: 18)
         scrollView.addSubview(bodyLabel)

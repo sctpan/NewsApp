@@ -27,7 +27,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 //        StoreService.clearAllNews()
         SwiftSpinner.show(Constants.loadingMessage)
-        ToastManager.shared.isQueueEnabled = true
+      //  ToastManager.shared.isQueueEnabled = true
       //  navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         refreshControl.addTarget(self, action: #selector(refreshPage), for: .valueChanged)
         addSearchBar()
@@ -134,7 +134,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("newsList count: \(newsList.count)")
+       // print("newsList count: \(newsList.count)")
         return newsList.count
     }
     
